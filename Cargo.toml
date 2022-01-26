@@ -1,0 +1,8 @@
+[workspace]
+members = [
+    "vercel-mongodb-count/api"
+]
+
+[profile.release]
+opt-level = 's'
+lto = true
