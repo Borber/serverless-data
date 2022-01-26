@@ -1,4 +1,5 @@
 use std::borrow::Borrow;
+use std::env;
 use std::error::Error;
 use mongodb::bson::{self, doc};
 use mongodb::bson::oid::ObjectId;
@@ -53,8 +54,7 @@ pub async fn add(config: &DataBaseConfig, add: isize) -> Result<(), Box<dyn Erro
 }
 
 pub async fn get_collection(config: &DataBaseConfig) -> Result<Collection<Count>, Box<dyn Error>> {
-    let uri_id = config.uri_id.as_str();
-    let uri = env!(uri_id);
+    let uri = env::var(&config.uri_id).unwrap();
     let options =
         ClientOptions::parse_with_resolver_config(uri, ResolverConfig::cloudflare())
             .await?;

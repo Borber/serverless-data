@@ -1,4 +1,3 @@
-use serde::{Deserialize, Serialize};
 use crate::api::Status;
 
 pub fn check(auth_code: String) -> bool {
