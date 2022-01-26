@@ -25,7 +25,7 @@ pub async fn count(config: &DataBaseConfig) -> Result<isize, Box<dyn Error>> {
     let first = first.unwrap();
     let first_count = first.count;
     let count_documents = collection.count_documents(doc! {}, None).await?;
-    let max_documents = 10;
+    let max_documents = env!("MAX_DOCUMENTS").parse().unwrap();
     let number = first.count + max_documents as isize;
     if count_documents > max_documents {
         let option = FindOneOptions::builder().skip(max_documents);
