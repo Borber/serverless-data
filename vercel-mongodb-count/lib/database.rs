@@ -8,7 +8,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct DataBaseConfig {
-    pub uri: String,
+    pub uri_id: String,
     pub database: String,
     pub collection: String,
 }
@@ -53,8 +53,9 @@ pub async fn add(config: &DataBaseConfig, add: isize) -> Result<(), Box<dyn Erro
 }
 
 pub async fn get_collection(config: &DataBaseConfig) -> Result<Collection<Count>, Box<dyn Error>> {
+    let uri = env!(config.uri_id);
     let options =
-        ClientOptions::parse_with_resolver_config(config.uri.as_str(), ResolverConfig::cloudflare())
+        ClientOptions::parse_with_resolver_config(uri, ResolverConfig::cloudflare())
             .await?;
     let client = mongodb::Client::with_options(options)?;
     let db = client.database(config.database.as_str());
