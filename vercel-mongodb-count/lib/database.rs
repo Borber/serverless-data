@@ -53,7 +53,7 @@ pub async fn add(config: &DataBaseConfig, add: isize) -> Result<(), Box<dyn Erro
 }
 
 pub async fn get_collection(config: &DataBaseConfig) -> Result<Collection<Count>, Box<dyn Error>> {
-    let uri = env!(config.uri_id);
+    let uri = env!(config.uri_id.as_str());
     let options =
         ClientOptions::parse_with_resolver_config(uri, ResolverConfig::cloudflare())
             .await?;
