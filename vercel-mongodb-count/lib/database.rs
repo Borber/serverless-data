@@ -26,13 +26,13 @@ pub async fn count(config: &DataBaseConfig) -> Result<isize, Box<dyn Error>> {
     let first_count = first.count;
     let count_documents = collection.count_documents(doc! {}, None).await?;
     let max_documents = 10;
-    let number = first.count + 10;
-    if count_documents > max_documents {
+    let number = first.count + max_documents;
+    if count_documents > max_documents as u64 {
         let option = FindOneOptions::builder().skip(max_documents);
         let last = collection.find_one(doc! {}, option.build()).await?;
         let fid = first._id;
         let lid = last.unwrap()._id;
-        collection.delete_many(doc! {"_id": {"$gt" : &fid, "$lt" : &lid}}, None).await;
+        collection.delete_many(doc! {"_id": {"$gt" : &fid, "$lte" : &lid}}, None).await;
         collection.update_one(
             doc! {"_id": &fid},
             doc! {"$set": { "count":  bson::to_bson(&number).expect("Unable to convert orders to bson")}},
